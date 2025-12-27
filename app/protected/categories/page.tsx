@@ -67,24 +67,31 @@ export default function CategoriesPage() {
   }
 
   return (
-    <div className="p-8">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Equipment Categories</h1>
-        <Button onClick={handleAddClick} className="bg-blue-600 hover:bg-blue-700">
-          Add Category
-        </Button>
+    <div className="p-6 md:p-8">
+      <div className="mb-8">
+        <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
+          <div>
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900">Equipment Categories</h1>
+            <p className="text-gray-600 text-sm mt-1">Organize equipment by category</p>
+          </div>
+          <Button onClick={handleAddClick} className="bg-blue-600 hover:bg-blue-700 font-semibold px-6">
+            Add Category
+          </Button>
+        </div>
       </div>
 
       {isFormOpen && (
         <div className="mb-8">
-          <Card className="p-6">
+          <Card className="p-6 border border-gray-200">
             <CategoryForm initialData={selectedCategory} onClose={handleFormClose} onSuccess={handleFormClose} />
           </Card>
         </div>
       )}
 
       {isLoading ? (
-        <p className="text-center text-gray-500">Loading...</p>
+        <Card className="p-8 text-center">
+          <p className="text-gray-500">Loading categories...</p>
+        </Card>
       ) : (
         <CategoryList
           categories={categories}

@@ -50,14 +50,19 @@ export default function CalendarPage() {
   if (isLoading) {
     return (
       <div className="p-8">
-        <p className="text-center text-gray-500">Loading...</p>
+        <Card className="p-8 text-center">
+          <p className="text-gray-500">Loading calendar...</p>
+        </Card>
       </div>
     )
   }
 
   return (
-    <div className="p-8">
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">Maintenance Calendar</h1>
+    <div className="p-6 md:p-8">
+      <div className="mb-8">
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-900">Maintenance Calendar</h1>
+        <p className="text-gray-600 text-sm mt-1">View and manage all scheduled preventive maintenance</p>
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
@@ -65,19 +70,21 @@ export default function CalendarPage() {
         </div>
 
         <div className="lg:col-span-1">
-          <Card className="p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Upcoming Maintenance</h2>
+          <Card className="p-6 bg-white border border-gray-200">
+            <h2 className="text-lg font-bold text-gray-900 mb-4">Upcoming Maintenance</h2>
             <div className="space-y-3">
               {requests.length === 0 ? (
                 <p className="text-sm text-gray-500">No scheduled maintenance</p>
               ) : (
                 requests.slice(0, 5).map((request) => (
-                  <Card key={request.id} className="p-3 bg-gray-50">
+                  <Card key={request.id} className="p-3 bg-gray-50 border border-gray-200">
                     <p className="font-semibold text-sm text-gray-900">{request.subject}</p>
                     <p className="text-xs text-gray-600 mt-1">
                       {new Date(request.scheduled_date).toLocaleDateString()}
                     </p>
-                    {request.equipment && <p className="text-xs text-gray-500">Equipment: {request.equipment.name}</p>}
+                    {request.equipment && (
+                      <p className="text-xs text-gray-500 mt-1">Equipment: {request.equipment.name}</p>
+                    )}
                   </Card>
                 ))
               )}

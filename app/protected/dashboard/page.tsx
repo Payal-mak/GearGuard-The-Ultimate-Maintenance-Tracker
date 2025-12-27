@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server"
 import KanbanBoard from "@/components/kanban-board"
-import { Card } from "@/components/ui/card"
+import RequestsTable from "@/components/requests-table"
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -34,30 +34,43 @@ export default async function DashboardPage() {
   return (
     <div className="p-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">Maintenance Dashboard</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Maintenance Dashboard</h1>
+        <p className="text-gray-600 mb-6">Track and manage all maintenance requests</p>
 
-        {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card className="p-4 bg-white">
-            <p className="text-gray-600 text-sm">Total Requests</p>
-            <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
-          </Card>
-          <Card className="p-4 bg-blue-50">
-            <p className="text-blue-600 text-sm">New</p>
-            <p className="text-2xl font-bold text-blue-900">{stats.new}</p>
-          </Card>
-          <Card className="p-4 bg-yellow-50">
-            <p className="text-yellow-600 text-sm">In Progress</p>
-            <p className="text-2xl font-bold text-yellow-900">{stats.inProgress}</p>
-          </Card>
-          <Card className="p-4 bg-green-50">
-            <p className="text-green-600 text-sm">Repaired</p>
-            <p className="text-2xl font-bold text-green-900">{stats.repaired}</p>
-          </Card>
+          <div className="bg-white border border-gray-200 rounded-lg p-4">
+            <p className="text-gray-600 text-sm font-medium">Total Requests</p>
+            <p className="text-3xl font-bold text-gray-900 mt-1">{stats.total}</p>
+          </div>
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <p className="text-blue-600 text-sm font-medium">New</p>
+            <p className="text-3xl font-bold text-blue-900 mt-1">{stats.new}</p>
+          </div>
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+            <p className="text-yellow-600 text-sm font-medium">In Progress</p>
+            <p className="text-3xl font-bold text-yellow-900 mt-1">{stats.inProgress}</p>
+          </div>
+          <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+            <p className="text-green-600 text-sm font-medium">Completed</p>
+            <p className="text-3xl font-bold text-green-900 mt-1">{stats.repaired}</p>
+          </div>
         </div>
       </div>
 
-      <KanbanBoard initialRequests={requests || []} />
+      <div className="bg-white rounded-lg border border-gray-200">
+        <div className="p-6 border-b border-gray-200">
+          <h2 className="text-xl font-semibold text-gray-900">Maintenance Requests</h2>
+        </div>
+        <div className="p-6">
+          <RequestsTable requests={requests || []} />
+        </div>
+      </div>
+
+      {/* Keep Kanban board below table */}
+      <div className="mt-12">
+        <h2 className="text-xl font-semibold text-gray-900 mb-6">Kanban Board View</h2>
+        <KanbanBoard initialRequests={requests || []} />
+      </div>
     </div>
   )
 }
