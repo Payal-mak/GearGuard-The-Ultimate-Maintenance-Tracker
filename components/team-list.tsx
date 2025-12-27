@@ -2,12 +2,15 @@
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
 
 interface Team {
   id: string
   name: string
   description?: string
   created_at?: string
+  team_members?: string[]
+  company?: string
 }
 
 interface TeamListProps {
@@ -32,8 +35,8 @@ export default function TeamList({ teams, onEdit, onDelete, onRefresh }: TeamLis
         <TableHeader>
           <TableRow className="bg-gray-50">
             <TableHead className="font-semibold">Team Name</TableHead>
-            <TableHead className="font-semibold">Description</TableHead>
-            <TableHead className="font-semibold">Created</TableHead>
+            <TableHead className="font-semibold">Team Members</TableHead>
+            <TableHead className="font-semibold">Company</TableHead>
             <TableHead className="font-semibold">Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -41,9 +44,21 @@ export default function TeamList({ teams, onEdit, onDelete, onRefresh }: TeamLis
           {teams.map((team) => (
             <TableRow key={team.id} className="hover:bg-gray-50 border-b">
               <TableCell className="font-medium text-gray-900">{team.name}</TableCell>
-              <TableCell className="text-gray-700">{team.description || "-"}</TableCell>
               <TableCell className="text-gray-700">
-                {team.created_at ? new Date(team.created_at).toLocaleDateString() : "-"}
+                {team.team_members && team.team_members.length > 0 ? (
+                  <div className="flex flex-wrap gap-1">
+                    {team.team_members.map((member, idx) => (
+                      <Badge key={idx} variant="secondary" className="text-xs">
+                        {member}
+                      </Badge>
+                    ))}
+                  </div>
+                ) : (
+                  <span className="text-gray-400">No members</span>
+                )}
+              </TableCell>
+              <TableCell className="text-gray-700">
+                {team.company || "My Company (San Francisco)"}
               </TableCell>
               <TableCell>
                 <div className="flex gap-2">
