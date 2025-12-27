@@ -17,6 +17,13 @@ interface Equipment {
   warranty_expiry?: string
   category_id?: string
   maintenance_team_id?: string
+  assigned_to?: string
+  employee?: string
+  technician?: string
+  scrap_date?: string
+  used_in_location?: string
+  work_center_id?: string
+  description?: string
 }
 
 export default function EquipmentPage() {
@@ -72,24 +79,33 @@ export default function EquipmentPage() {
   }
 
   return (
-    <div className="p-8">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Equipment Management</h1>
-        <Button onClick={handleAddClick} className="bg-blue-600 hover:bg-blue-700">
-          Add Equipment
-        </Button>
+    <div className="p-6 md:p-8">
+      <div className="mb-8">
+        <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
+          <div>
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900">Equipment</h1>
+            <p className="text-gray-600 text-sm mt-1">
+              Manage your equipment and track maintenance
+            </p>
+          </div>
+          <Button onClick={handleAddClick} className="bg-blue-600 hover:bg-blue-700 font-semibold px-6">
+            New
+          </Button>
+        </div>
       </div>
 
       {isFormOpen && (
         <div className="mb-8">
-          <Card className="p-6">
+          <Card className="p-6 border border-gray-200">
             <EquipmentForm initialData={selectedEquipment} onClose={handleFormClose} onSuccess={handleFormClose} />
           </Card>
         </div>
       )}
 
       {isLoading ? (
-        <p className="text-center text-gray-500">Loading...</p>
+        <Card className="p-8 text-center">
+          <p className="text-gray-500">Loading equipment...</p>
+        </Card>
       ) : (
         <EquipmentList
           equipment={equipment}

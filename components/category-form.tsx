@@ -21,6 +21,8 @@ export default function CategoryForm({ initialData, onClose, onSuccess }: Catego
   const [formData, setFormData] = useState({
     name: initialData?.name || "",
     description: initialData?.description || "",
+    responsible: initialData?.responsible || "",
+    company: initialData?.company || "My Company (San Francisco)",
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -39,17 +41,25 @@ export default function CategoryForm({ initialData, onClose, onSuccess }: Catego
       } = await supabase.auth.getUser()
       if (!user) throw new Error("User not authenticated")
 
+      // Filter out empty strings
+      const cleanedData = {
+        name: formData.name,
+        description: formData.description || null,
+        responsible: formData.responsible || null,
+        company: formData.company || null,
+      }
+
       if (initialData?.id) {
         // Update
         const { error: updateError } = await supabase
           .from("equipment_categories")
-          .update(formData)
+          .update(cleanedData)
           .eq("id", initialData.id)
         if (updateError) throw updateError
       } else {
         // Create
         const { error: insertError } = await supabase.from("equipment_categories").insert({
-          ...formData,
+          ...cleanedData,
           user_id: user.id,
         })
         if (insertError) throw insertError
@@ -57,6 +67,7 @@ export default function CategoryForm({ initialData, onClose, onSuccess }: Catego
 
       onSuccess()
     } catch (err: unknown) {
+      console.error("Category form error:", err)
       setError(err instanceof Error ? err.message : "An error occurred")
     } finally {
       setIsLoading(false)
@@ -71,6 +82,22 @@ export default function CategoryForm({ initialData, onClose, onSuccess }: Catego
         <div>
           <Label htmlFor="name">Category Name *</Label>
           <Input id="name" name="name" value={formData.name} onChange={handleChange} required />
+        </div>
+
+        <div>
+          <Label htmlFor="responsible">Responsible</Label>
+          <Input
+            id="responsible"
+            name="responsible"
+            value={formData.responsible}
+            onChange={handleChange}
+            placeholder="Person responsible for this category"
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="company">Company</Label>
+          <Input id="company" name="company" value={formData.company} onChange={handleChange} />
         </div>
 
         <div>

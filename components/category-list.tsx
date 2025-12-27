@@ -8,6 +8,8 @@ interface Category {
   name: string
   description?: string
   created_at?: string
+  responsible?: string
+  company?: string
 }
 
 interface CategoryListProps {
@@ -31,9 +33,9 @@ export default function CategoryList({ categories, onEdit, onDelete, onRefresh }
       <Table>
         <TableHeader>
           <TableRow className="bg-gray-50">
-            <TableHead className="font-semibold">Category Name</TableHead>
-            <TableHead className="font-semibold">Description</TableHead>
-            <TableHead className="font-semibold">Created</TableHead>
+            <TableHead className="font-semibold">Name</TableHead>
+            <TableHead className="font-semibold">Responsible</TableHead>
+            <TableHead className="font-semibold">Company</TableHead>
             <TableHead className="font-semibold">Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -41,9 +43,9 @@ export default function CategoryList({ categories, onEdit, onDelete, onRefresh }
           {categories.map((category) => (
             <TableRow key={category.id} className="hover:bg-gray-50 border-b">
               <TableCell className="font-medium text-gray-900">{category.name}</TableCell>
-              <TableCell className="text-gray-700">{category.description || "-"}</TableCell>
+              <TableCell className="text-gray-700">{category.responsible || "-"}</TableCell>
               <TableCell className="text-gray-700">
-                {category.created_at ? new Date(category.created_at).toLocaleDateString() : "-"}
+                {category.company || "My Company (San Francisco)"}
               </TableCell>
               <TableCell>
                 <div className="flex gap-2">
